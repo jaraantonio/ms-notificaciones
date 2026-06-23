@@ -1,0 +1,42 @@
+spring:
+  application:
+    name: ms-notificaciones-test
+
+  # ─── H2 en memoria para testing ───
+  datasource:
+    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;MODE=MySQL
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+
+  # Sin Flyway ni seed data en test
+  flyway:
+    enabled: false
+  sql:
+    init:
+      mode: never
+
+  # ─── Mock mail (no enviar correos reales en test) ───
+  mail:
+    host: localhost
+    port: 2525
+    username: test
+    password: test
+    properties:
+      mail.smtp.auth: false
+      mail.smtp.starttls.enable: false
+
+server:
+  port: 0
+
+logging:
+  level:
+    com.perfulandia: DEBUG

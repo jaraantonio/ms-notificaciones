@@ -1,0 +1,184 @@
+###############################################################################
+# Perfulandia SPA — ms-notificaciones (puerto 8089)
+# Tipos de notificación: CONFIRMACION_PAGO, ACTUALIZACION_ENVIO,
+#   FACTURA_EMITIDA, RECUPERACION_CLAVE, ALERTA_SISTEMA
+# Estados: PENDIENTE, ENVIADO, FALLIDO
+#
+# ⚠ SMTP DUMMY: Con valores dummy en application.yml, los POST /enviar
+#   retornan 500 (FALLIDO tras 3 reintentos). Si configurás Gmail real
+#   (MAIL_USERNAME / MAIL_PASSWORD), cambiá # Esperado: 500 → # Esperado: 201
+#   en los tests HU-01 a HU-05.
+###############################################################################
+
+@base_url = http://localhost:8089
+
+
+# ═══════════════════════════════════════════════════════════════════════════════
+#  ENVÍO DE NOTIFICACIONES — Endpoint público (interno entre MS)
+#  ⚠ Con SMTP dummy → HTTP 500. Con SMTP real → HTTP 201.
+# ═══════════════════════════════════════════════════════════════════════════════
+
+### HU-01 | Enviar confirmación de pago
+# Esperado: 500
+POST {{base_url}}/api/notificaciones/enviar
+Content-Type: application/json
+
+{
+  "tipo": "CONFIRMACION_PAGO",
+  "destinatario": "cliente.test_{{$timestamp}}@email.com",
+  "asunto": null,
+  "variables": {
+    "nombre": "María López",
+    "monto": "$45.990",
+    "pedidoId": "#P-TEST-{{$timestamp}}",
+    "fecha": "15/06/2026"
+  },
+  "archivoAdjunto": null
+}
+
+
+### HU-02 | Enviar actualización de envío
+# Esperado: 500
+POST {{base_url}}/api/notificaciones/enviar
+Content-Type: application/json
+
+{
+  "tipo": "ACTUALIZACION_ENVIO",
+  "destinatario": "juan.perez_{{$timestamp}}@email.com",
+  "asunto": null,
+  "variables": {
+    "nombre": "Juan Pérez",
+    "pedidoId": "#E-TEST-{{$timestamp}}",
+    "estadoEnvio": "EN CAMINO",
+    "linkSeguimiento": "https://perfulandia.cl/seguimiento/E-TEST-{{$timestamp}}"
+  },
+  "archivoAdjunto": null
+}
+
+
+### HU-03 | Enviar factura emitida (con PDF adjunto)
+# Esperado: 500
+POST {{base_url}}/api/notificaciones/enviar
+Content-Type: application/json
+
+{
+  "tipo": "FACTURA_EMITIDA",
+  "destinatario": "empresa_{{$timestamp}}@cliente-corporativo.cl",
+  "asunto": "Factura #F-TEST-{{$timestamp}}",
+  "variables": {
+    "nombre": "Empresa Corporativa Ltda.",
+    "monto": "$890.000",
+    "pedidoId": "#F-TEST-{{$timestamp}}",
+    "fecha": "20/06/2026"
+  },
+  "archivoAdjunto": null
+}
+
+
+### HU-04 | Enviar recuperación de clave
+# Esperado: 500
+POST {{base_url}}/api/notificaciones/enviar
+Content-Type: application/json
+
+{
+  "tipo": "RECUPERACION_CLAVE",
+  "destinatario": "pedro.gomez_{{$timestamp}}@email.com",
+  "asunto": null,
+  "variables": {
+    "nombre": "Pedro Gómez",
+    "enlaceRestablecimiento": "https://perfulandia.cl/restablecer?token=test-{{$timestamp}}"
+  },
+  "archivoAdjunto": null
+}
+
+
+### HU-05 | Enviar alerta del sistema
+# Esperado: 500
+POST {{base_url}}/api/notificaciones/enviar
+Content-Type: application/json
+
+{
+  "tipo": "ALERTA_SISTEMA",
+  "destinatario": "admin_{{$timestamp}}@perfulandia.cl",
+  "asunto": null,
+  "variables": {
+    "nombreMicroservicio": "ms-pagos",
+    "error": "Connection refused: connect — timeout after 30s",
+    "timestamp": "{{$timestamp}}"
+  },
+  "archivoAdjunto": null
+}
+
+
+# ═══════════════════════════════════════════════════════════════════════════════
+#  VALIDACIONES — Casos de error
+# ═══════════════════════════════════════════════════════════════════════════════
+
+### HU-06 | Validación — Falta campo tipo (obligatorio)
+# Esperado: 400
+POST {{base_url}}/api/notificaciones/enviar
+Content-Type: application/json
+
+{
+  "destinatario": "test@email.com",
+  "asunto": "Test sin tipo",
+  "variables": {},
+  "archivoAdjunto": null
+}
+
+
+### HU-07 | Validación — Email inválido
+# Esperado: 400
+POST {{base_url}}/api/notificaciones/enviar
+Content-Type: application/json
+
+{
+  "tipo": "CONFIRMACION_PAGO",
+  "destinatario": "esto-no-es-un-email",
+  "asunto": null,
+  "variables": {
+    "nombre": "Test",
+    "monto": "$100",
+    "pedidoId": "#P-001",
+    "fecha": "2026-01-01"
+  },
+  "archivoAdjunto": null
+}
+
+
+# ═══════════════════════════════════════════════════════════════════════════════
+#  CONSULTA DE LOGS — Endpoint admin
+# ═══════════════════════════════════════════════════════════════════════════════
+
+### HU-08 | Logs — Sin filtros (todos los registros)
+# Esperado: 200
+GET {{base_url}}/api/notificaciones/logs?page=0&size=10&sort=fechaCreacion,desc
+
+
+### HU-09 | Logs — Filtro por tipo CONFIRMACION_PAGO
+# Esperado: 200
+GET {{base_url}}/api/notificaciones/logs?tipo=CONFIRMACION_PAGO&page=0&size=10
+
+
+### HU-10 | Logs — Filtro por estado FALLIDO
+# Esperado: 200
+GET {{base_url}}/api/notificaciones/logs?estado=FALLIDO&page=0&size=10
+
+
+### HU-11 | Logs — Filtro por tipo + estado
+# Esperado: 200
+GET {{base_url}}/api/notificaciones/logs?tipo=ALERTA_SISTEMA&estado=ENVIADO&page=0&size=10
+
+
+### HU-12 | Logs — Filtro con tipo inválido
+# Esperado: 400
+GET {{base_url}}/api/notificaciones/logs?tipo=INVALIDO
+
+
+# ═══════════════════════════════════════════════════════════════════════════════
+#  HEALTH CHECK
+# ═══════════════════════════════════════════════════════════════════════════════
+
+### Health check
+# Esperado: 200
+GET {{base_url}}/actuator/health
