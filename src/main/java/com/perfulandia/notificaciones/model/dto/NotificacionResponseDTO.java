@@ -1,17 +1,22 @@
 package com.perfulandia.notificaciones.model.dto;
 
-import java.time.LocalDateTime;
-
 import com.perfulandia.notificaciones.model.enums.EstadoNotificacion;
 import com.perfulandia.notificaciones.model.enums.TipoNotificacion;
 
+import java.time.LocalDateTime;
+
+/**
+ * DTO inmutable para la respuesta de una notificación procesada.
+ * Refleja el estado final del registro en BD tras el envío (o fallo).
+ */
 public record NotificacionResponseDTO(
-        Integer idNotificacion,
-        Integer idUsuario,
+        Long id,
+        TipoNotificacion tipo,
         String destinatario,
         String asunto,
-        String cuerpoMensaje,
-        TipoNotificacion tipo,
         EstadoNotificacion estado,
-        LocalDateTime fechaEnvio) {
-}
+        int intentos,
+        LocalDateTime fechaCreacion,
+        LocalDateTime fechaEnvio,
+        String error
+) {}

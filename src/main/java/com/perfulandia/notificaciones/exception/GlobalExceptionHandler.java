@@ -14,22 +14,29 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Manejador global de excepciones.
+ * Captura y formatea todas las excepciones no controladas en respuestas JSON estandarizadas.
+ */
 @Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+    /**
+     * Errores de validación de campos (@Valid).
+     */
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ErrorResponseDTO> handleValidationExceptions(
+    public ResponseEntity<ErrorResponseDTO> handleValidationException(
             MethodArgumentNotValidException ex, HttpServletRequest request) {
 
         Map<String, String> errors = new HashMap<>();
-        ex.getBindingResult().getAllErrors().forEach((error) -> {
+        ex.getBindingResult().getAllErrors().forEach(error -> {
             String fieldName = ((FieldError) error).getField();
             String errorMessage = error.getDefaultMessage();
             errors.put(fieldName, errorMessage);
         });
 
-        log.warn("Error de validación en el endpoint {}: {}", request.getRequestURI(), errors);
+        log.warn("Error de validación en {}: {}", request.getRequestURI(), errors);
 
         ErrorResponseDTO errorResponse = new ErrorResponseDTO(
                 LocalDateTime.now(),
@@ -37,16 +44,62 @@ public class GlobalExceptionHandler {
                 HttpStatus.BAD_REQUEST.getReasonPhrase(),
                 "Error en la validación de los datos enviados",
                 request.getRequestURI(),
-                errors);
+                errors
+        );
 
-        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
     }
 
+    /**
+     * Filtro de tipo/estado inválido (ej: "ENVIADA" en vez de "ENVIADO").
+     */
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<ErrorResponseDTO> handleIllegalArgument(
+            IllegalArgumentException ex, HttpServletRequest request) {
+
+        log.warn("Argumento inválido en {}: {}", request.getRequestURI(), ex.getMessage());
+
+        ErrorResponseDTO errorResponse = new ErrorResponseDTO(
+                LocalDateTime.now(),
+                HttpStatus.BAD_REQUEST.value(),
+                HttpStatus.BAD_REQUEST.getReasonPhrase(),
+                "Parámetro inválido: " + ex.getMessage(),
+                request.getRequestURI(),
+                null
+        );
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
+    }
+
+    /**
+     * Notificación no encontrada por ID.
+     */
+    @ExceptionHandler(NotificacionNotFoundException.class)
+    public ResponseEntity<ErrorResponseDTO> handleNotFound(
+            NotificacionNotFoundException ex, HttpServletRequest request) {
+
+        log.warn("Recurso no encontrado en {}: {}", request.getRequestURI(), ex.getMessage());
+
+        ErrorResponseDTO errorResponse = new ErrorResponseDTO(
+                LocalDateTime.now(),
+                HttpStatus.NOT_FOUND.value(),
+                HttpStatus.NOT_FOUND.getReasonPhrase(),
+                ex.getMessage(),
+                request.getRequestURI(),
+                null
+        );
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+    }
+
+    /**
+     * Fallback para cualquier excepción no controlada.
+     */
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ErrorResponseDTO> handleGlobalExceptions(
+    public ResponseEntity<ErrorResponseDTO> handleGlobalException(
             Exception ex, HttpServletRequest request) {
 
-        log.error("Error interno no controlado en el endpoint {}", request.getRequestURI(), ex);
+        log.error("Error interno no controlado en {}: {}", request.getRequestURI(), ex.getMessage(), ex);
 
         ErrorResponseDTO errorResponse = new ErrorResponseDTO(
                 LocalDateTime.now(),
@@ -54,8 +107,9 @@ public class GlobalExceptionHandler {
                 HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(),
                 "Ha ocurrido un error inesperado en el servidor",
                 request.getRequestURI(),
-                null);
+                null
+        );
 
-        return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
     }
 }

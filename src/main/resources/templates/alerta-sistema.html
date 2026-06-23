@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alerta del Sistema — Perfulandia SPA</title>
+</head>
+<body style="margin:0;padding:0;background-color:#f4f4f4;font-family:Arial,Helvetica,sans-serif;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#f4f4f4;">
+        <tr>
+            <td align="center" style="padding:24px 16px;">
+                <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:600px;background-color:#ffffff;border-radius:12px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.08);">
+
+                    <!-- Header — rojo para alertas -->
+                    <tr>
+                        <td style="background-color:#e63946;padding:28px 32px;text-align:center;">
+                            <h1 style="color:#ffffff;margin:0;font-size:24px;font-weight:700;">⚠ Alerta del Sistema</h1>
+                        </td>
+                    </tr>
+
+                    <!-- Body -->
+                    <tr>
+                        <td style="padding:32px;">
+                            <h2 style="color:#e63946;margin:0 0 16px 0;font-size:20px;">
+                                Se ha detectado un problema
+                            </h2>
+
+                            <!-- Detalles del error -->
+                            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#fff5f5;border:1px solid #fecaca;border-radius:8px;padding:16px;margin-bottom:16px;">
+                                <tr>
+                                    <td>
+                                        <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+                                            <tr>
+                                                <td style="color:#991b1b;font-size:14px;padding:4px 0;">🖥️ Microservicio:</td>
+                                                <td style="color:#991b1b;font-size:14px;font-weight:bold;text-align:right;padding:4px 0;" th:text="${nombreMicroservicio}">ms-pagos</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="color:#991b1b;font-size:14px;padding:4px 0;">🕐 Timestamp:</td>
+                                                <td style="color:#991b1b;font-size:14px;text-align:right;padding:4px 0;" th:text="${timestamp}">2026-02-10T22:15:00</td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <!-- Mensaje de error -->
+                            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#1e1e1e;border-radius:8px;padding:16px;margin-bottom:16px;">
+                                <tr>
+                                    <td>
+                                        <pre style="color:#f48771;font-family:'Courier New',monospace;font-size:13px;line-height:1.5;margin:0;white-space:pre-wrap;word-break:break-word;" th:text="${error}">Connection refused: connect</pre>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <p style="color:#e63946;font-size:16px;font-weight:bold;line-height:1.6;margin:0 0 16px 0;">
+                                🚨 Se requiere intervención técnica inmediata.
+                            </p>
+
+                            <p style="color:#777777;font-size:14px;line-height:1.5;margin:0;">
+                                Este microservicio no está respondiendo a los health checks. Verifica la conectividad y los logs del servicio afectado.
+                            </p>
+                        </td>
+                    </tr>
+
+                    <!-- Footer -->
+                    <tr>
+                        <td style="background-color:#f8f9fa;padding:20px 32px;text-align:center;border-top:1px solid #eeeeee;">
+                            <p style="color:#777777;font-size:12px;line-height:1.5;margin:0;">
+                                <strong>Sistema de Monitoreo — Perfulandia SPA</strong><br>
+                                <em>Este es un correo generado automáticamente por el sistema de alertas.</em><br>
+                                © 2026 Perfulandia SPA. Todos los derechos reservados.
+                            </p>
+                        </td>
+                    </tr>
+
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>

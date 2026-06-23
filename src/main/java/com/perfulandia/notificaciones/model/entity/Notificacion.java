@@ -1,23 +1,15 @@
 package com.perfulandia.notificaciones.model.entity;
 
-import java.time.LocalDateTime;
-
 import com.perfulandia.notificaciones.model.enums.EstadoNotificacion;
 import com.perfulandia.notificaciones.model.enums.TipoNotificacion;
-
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "notificaciones")
@@ -30,10 +22,11 @@ public class Notificacion {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer idNotificacion;
+    private Long id;
 
-    @Column(name = "id_usuario", nullable = false)
-    private Integer idUsuario;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "tipo", nullable = false, length = 50)
+    private TipoNotificacion tipo;
 
     @Column(name = "destinatario", nullable = false, length = 150)
     private String destinatario;
@@ -41,17 +34,25 @@ public class Notificacion {
     @Column(name = "asunto", nullable = false, length = 200)
     private String asunto;
 
-    @Column(name = "cuerpo_mensaje", nullable = false, columnDefinition = "TEXT")
-    private String cuerpoMensaje;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "tipo", nullable = false, length = 50)
-    private TipoNotificacion tipo;
+    @Column(name = "cuerpo", nullable = false, columnDefinition = "TEXT")
+    private String cuerpo;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "estado", nullable = false, length = 50)
-    private EstadoNotificacion estado;
+    @Builder.Default
+    private EstadoNotificacion estado = EstadoNotificacion.PENDIENTE;
+
+    @Column(name = "intentos", nullable = false)
+    @Builder.Default
+    private Integer intentos = 0;
+
+    @Column(name = "fecha_creacion", nullable = false, updatable = false)
+    @Builder.Default
+    private LocalDateTime fechaCreacion = LocalDateTime.now();
 
     @Column(name = "fecha_envio")
     private LocalDateTime fechaEnvio;
+
+    @Column(name = "error", columnDefinition = "TEXT")
+    private String error;
 }

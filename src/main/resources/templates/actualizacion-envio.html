@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Actualización de Envío — Perfulandia SPA</title>
+</head>
+<body style="margin:0;padding:0;background-color:#f4f4f4;font-family:Arial,Helvetica,sans-serif;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#f4f4f4;">
+        <tr>
+            <td align="center" style="padding:24px 16px;">
+                <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:600px;background-color:#ffffff;border-radius:12px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.08);">
+
+                    <!-- Header -->
+                    <tr>
+                        <td style="background-color:#1b4332;padding:28px 32px;text-align:center;">
+                            <h1 style="color:#ffffff;margin:0;font-size:24px;font-weight:700;">📦 Perfulandia SPA</h1>
+                        </td>
+                    </tr>
+
+                    <!-- Body -->
+                    <tr>
+                        <td style="padding:32px;">
+                            <h2 style="color:#1b4332;margin:0 0 16px 0;font-size:20px;">
+                                Actualización de tu envío
+                            </h2>
+
+                            <p style="color:#333333;font-size:16px;line-height:1.6;margin:0 0 20px 0;">
+                                Hola <strong th:text="${nombre}">[nombre]</strong>, tu pedido ha cambiado de estado:
+                            </p>
+
+                            <!-- Estado -->
+                            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:24px;">
+                                <tr>
+                                    <td align="center">
+                                        <table role="presentation" cellpadding="0" cellspacing="0" style="background-color:#e8f5e9;border:2px solid #40916c;border-radius:8px;padding:16px 32px;">
+                                            <tr>
+                                                <td style="color:#1b4332;font-size:28px;padding-right:12px;">🚚</td>
+                                                <td style="color:#1b4332;font-size:18px;font-weight:bold;" th:text="${estadoEnvio}">EN CAMINO</td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <!-- Detalles -->
+                            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#f8f9fa;border-radius:8px;padding:16px;margin-bottom:24px;">
+                                <tr>
+                                    <td style="padding:8px 0;">
+                                        <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+                                            <tr>
+                                                <td style="color:#555555;font-size:14px;padding:6px 0;">📦 Pedido:</td>
+                                                <td style="color:#1b4332;font-size:16px;font-weight:bold;text-align:right;padding:6px 0;" th:text="${pedidoId}">#E-2026-101</td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <!-- Botón de seguimiento -->
+                            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:24px;">
+                                <tr>
+                                    <td align="center">
+                                        <a th:href="${linkSeguimiento}" href="#" style="display:inline-block;background-color:#40916c;color:#ffffff;text-decoration:none;padding:14px 32px;border-radius:6px;font-size:16px;font-weight:bold;">🔍 Ver seguimiento en vivo</a>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <p style="color:#777777;font-size:14px;line-height:1.5;margin:0;">
+                                También puedes copiar este enlace en tu navegador:<br>
+                                <span style="color:#40916c;word-break:break-all;" th:text="${linkSeguimiento}">https://perfulandia.cl/seguimiento/E-2026-101</span>
+                            </p>
+                        </td>
+                    </tr>
+
+                    <!-- Footer -->
+                    <tr>
+                        <td style="background-color:#f8f9fa;padding:20px 32px;text-align:center;border-top:1px solid #eeeeee;">
+                            <p style="color:#777777;font-size:12px;line-height:1.5;margin:0;">
+                                <strong>Equipo Perfulandia SPA</strong><br>
+                                <em>Este es un correo generado automáticamente, por favor no responda a esta dirección.</em><br>
+                                © 2026 Perfulandia SPA. Todos los derechos reservados.
+                            </p>
+                        </td>
+                    </tr>
+
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>
