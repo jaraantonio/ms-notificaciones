@@ -4,7 +4,7 @@
 
 Microservicio de envío de correos electrónicos con plantillas HTML (Thymeleaf), reintentos automáticos y registro de histórico para Perfulandia SPA. Recibe solicitudes de otros microservicios (Usuarios, Pagos, Envíos) y despacha notificaciones transaccionales.
 
-- Historias de usuario: HU-01 a HU-12.
+- Historias de usuario: HU-42, HU-43.
 - Swagger/OpenAPI disponible en: http://localhost:8089/swagger-ui.html
 
 ## Estudiante
@@ -41,13 +41,13 @@ Al iniciar la aplicación se insertan automáticamente 10 registros, cubriendo t
 
 | Método | Ruta                           | HU     | Descripción                                  |
 |--------|--------------------------------|--------|----------------------------------------------|
-| POST   | `/api/notificaciones/enviar`   | HU-01 a HU-05 | Enviar correo con plantilla HTML (reintentos automáticos) |
+| POST   | `/api/notificaciones/enviar`   | HU-42 | Enviar correo con plantilla HTML (reintentos automáticos) |
 
 ### Consulta (admin)
 
 | Método | Ruta                           | HU          | Descripción                                  |
 |--------|--------------------------------|-------------|----------------------------------------------|
-| GET    | `/api/notificaciones/logs`     | HU-08 a HU-12 | Historial paginado, filtros por `?tipo=` y `?estado=` |
+| GET    | `/api/notificaciones/logs`     | HU-42 | Historial paginado, filtros por `?tipo=` y `?estado=` |
 
 ## Ejecución
 

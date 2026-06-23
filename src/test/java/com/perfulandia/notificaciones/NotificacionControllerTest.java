@@ -66,7 +66,7 @@ class NotificacionControllerTest {
     class EnviarCorreo {
 
         @Test
-        @DisplayName("HU-01 — Envío exitoso retorna 201 + JSON completo")
+        @DisplayName("HU-42 · Envío exitoso retorna 201 + JSON completo")
         void enviarCorreo_Exitoso_201() throws Exception {
             NotificacionRequestDTO request = new NotificacionRequestDTO(
                     TipoNotificacion.CONFIRMACION_PAGO,
@@ -98,7 +98,7 @@ class NotificacionControllerTest {
         }
 
         @Test
-        @DisplayName("HU-05 — Envío fallido retorna 500 con estado FALLIDO")
+        @DisplayName("HU-42 · Envío fallido retorna 500 con estado FALLIDO")
         void enviarCorreo_Fallido_500() throws Exception {
             NotificacionRequestDTO request = new NotificacionRequestDTO(
                     TipoNotificacion.ALERTA_SISTEMA,
@@ -128,7 +128,7 @@ class NotificacionControllerTest {
         }
 
         @Test
-        @DisplayName("HU-06 — Falta campo tipo → 400 + validationErrors")
+        @DisplayName("HU-42 · Falta campo tipo → 400 + validationErrors")
         void enviarCorreo_SinTipo_400() throws Exception {
             String bodySinTipo = """
                     {
@@ -148,7 +148,7 @@ class NotificacionControllerTest {
         }
 
         @Test
-        @DisplayName("HU-07 — Email inválido → 400 + validationErrors.destinatario")
+        @DisplayName("HU-42 · Email inválido → 400 + validationErrors.destinatario")
         void enviarCorreo_EmailInvalido_400() throws Exception {
             NotificacionRequestDTO request = new NotificacionRequestDTO(
                     TipoNotificacion.CONFIRMACION_PAGO,
@@ -167,7 +167,7 @@ class NotificacionControllerTest {
         }
 
         @Test
-        @DisplayName("HU-06b — Destinatario vacío → 400")
+        @DisplayName("HU-42 · Destinatario vacío → 400")
         void enviarCorreo_DestinatarioVacio_400() throws Exception {
             NotificacionRequestDTO request = new NotificacionRequestDTO(
                     TipoNotificacion.RECUPERACION_CLAVE,
@@ -185,7 +185,7 @@ class NotificacionControllerTest {
         }
 
         @Test
-        @DisplayName("HU-04 — RECUPERACION_CLAVE exitoso")
+        @DisplayName("HU-42 · RECUPERACION_CLAVE exitoso")
         void enviarCorreo_RecuperacionClave_201() throws Exception {
             NotificacionRequestDTO request = new NotificacionRequestDTO(
                     TipoNotificacion.RECUPERACION_CLAVE,
@@ -213,7 +213,7 @@ class NotificacionControllerTest {
         }
 
         @Test
-        @DisplayName("HU-02 — ACTUALIZACION_ENVIO con variables completas")
+        @DisplayName("HU-42 · ACTUALIZACION_ENVIO con variables completas")
         void enviarCorreo_ActualizacionEnvio_201() throws Exception {
             NotificacionRequestDTO request = new NotificacionRequestDTO(
                     TipoNotificacion.ACTUALIZACION_ENVIO,
@@ -251,7 +251,7 @@ class NotificacionControllerTest {
     class ObtenerLogs {
 
         @Test
-        @DisplayName("HU-08 — Sin filtros retorna página paginada")
+        @DisplayName("HU-42 · Sin filtros retorna página paginada")
         void logs_SinFiltros_200() throws Exception {
             NotificacionResponseDTO dto = new NotificacionResponseDTO(
                     1L, TipoNotificacion.CONFIRMACION_PAGO, "a@b.cl",
@@ -272,7 +272,7 @@ class NotificacionControllerTest {
         }
 
         @Test
-        @DisplayName("HU-09 — Filtro por tipo CONFIRMACION_PAGO")
+        @DisplayName("HU-42 · Filtro por tipo CONFIRMACION_PAGO")
         void logs_FiltroTipo_200() throws Exception {
             Page<NotificacionResponseDTO> pagina = new PageImpl<>(List.of(), PageRequest.of(0, 20), 0);
 
@@ -285,7 +285,7 @@ class NotificacionControllerTest {
         }
 
         @Test
-        @DisplayName("HU-10 — Filtro por estado FALLIDO")
+        @DisplayName("HU-42 · Filtro por estado FALLIDO")
         void logs_FiltroEstado_200() throws Exception {
             Page<NotificacionResponseDTO> pagina = new PageImpl<>(List.of(), PageRequest.of(0, 20), 0);
 
@@ -298,7 +298,7 @@ class NotificacionControllerTest {
         }
 
         @Test
-        @DisplayName("HU-12 — Filtro con tipo inválido → 400 (IllegalArgumentException)")
+        @DisplayName("HU-42 · Filtro con tipo inválido → 400 (IllegalArgumentException)")
         void logs_TipoInvalido_400() throws Exception {
             when(notificacionService.obtenerLogs(any(), eq("INVALIDO"), isNull()))
                     .thenThrow(new IllegalArgumentException(
@@ -312,7 +312,7 @@ class NotificacionControllerTest {
         }
 
         @Test
-        @DisplayName("HU-11 — Filtro por tipo + estado combinados")
+        @DisplayName("HU-42 · Filtro por tipo + estado combinados")
         void logs_FiltroTipoYEstado_200() throws Exception {
             NotificacionResponseDTO dto = new NotificacionResponseDTO(
                     9L, TipoNotificacion.ALERTA_SISTEMA, "admin@perfulandia.cl",

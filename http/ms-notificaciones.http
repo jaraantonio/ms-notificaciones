@@ -7,7 +7,7 @@
 # ⚠ SMTP DUMMY: Con valores dummy en application.yml, los POST /enviar
 #   retornan 500 (FALLIDO tras 3 reintentos). Si configurás Gmail real
 #   (MAIL_USERNAME / MAIL_PASSWORD), cambiá # Esperado: 500 → # Esperado: 201
-#   en los tests HU-01 a HU-05.
+#   en los tests de HU-42.
 ###############################################################################
 
 @base_url = http://localhost:8089
@@ -18,7 +18,7 @@
 #  ⚠ Con SMTP dummy → HTTP 500. Con SMTP real → HTTP 201.
 # ═══════════════════════════════════════════════════════════════════════════════
 
-### HU-01 | Enviar confirmación de pago
+### HU-42 | Envío — Confirmación de pago
 # Esperado: 500
 POST {{base_url}}/api/notificaciones/enviar
 Content-Type: application/json
@@ -37,7 +37,7 @@ Content-Type: application/json
 }
 
 
-### HU-02 | Enviar actualización de envío
+### HU-42 | Envío — Actualización de envío
 # Esperado: 500
 POST {{base_url}}/api/notificaciones/enviar
 Content-Type: application/json
@@ -56,7 +56,7 @@ Content-Type: application/json
 }
 
 
-### HU-03 | Enviar factura emitida (con PDF adjunto)
+### HU-42 | Envío — Factura emitida (con PDF adjunto)
 # Esperado: 500
 POST {{base_url}}/api/notificaciones/enviar
 Content-Type: application/json
@@ -75,7 +75,7 @@ Content-Type: application/json
 }
 
 
-### HU-04 | Enviar recuperación de clave
+### HU-42 | Envío — Recuperación de clave
 # Esperado: 500
 POST {{base_url}}/api/notificaciones/enviar
 Content-Type: application/json
@@ -92,7 +92,7 @@ Content-Type: application/json
 }
 
 
-### HU-05 | Enviar alerta del sistema
+### HU-43 | Envío — Alerta del sistema
 # Esperado: 500
 POST {{base_url}}/api/notificaciones/enviar
 Content-Type: application/json
@@ -114,7 +114,7 @@ Content-Type: application/json
 #  VALIDACIONES — Casos de error
 # ═══════════════════════════════════════════════════════════════════════════════
 
-### HU-06 | Validación — Falta campo tipo (obligatorio)
+### HU-42 | Validación — Falta campo tipo (obligatorio)
 # Esperado: 400
 POST {{base_url}}/api/notificaciones/enviar
 Content-Type: application/json
@@ -127,7 +127,7 @@ Content-Type: application/json
 }
 
 
-### HU-07 | Validación — Email inválido
+### HU-42 | Validación — Email inválido
 # Esperado: 400
 POST {{base_url}}/api/notificaciones/enviar
 Content-Type: application/json
@@ -150,27 +150,27 @@ Content-Type: application/json
 #  CONSULTA DE LOGS — Endpoint admin
 # ═══════════════════════════════════════════════════════════════════════════════
 
-### HU-08 | Logs — Sin filtros (todos los registros)
+### HU-42 | Logs — Sin filtros (todos los registros)
 # Esperado: 200
 GET {{base_url}}/api/notificaciones/logs?page=0&size=10&sort=fechaCreacion,desc
 
 
-### HU-09 | Logs — Filtro por tipo CONFIRMACION_PAGO
+### HU-42 | Logs — Filtro por tipo CONFIRMACION_PAGO
 # Esperado: 200
 GET {{base_url}}/api/notificaciones/logs?tipo=CONFIRMACION_PAGO&page=0&size=10
 
 
-### HU-10 | Logs — Filtro por estado FALLIDO
+### HU-42 | Logs — Filtro por estado FALLIDO
 # Esperado: 200
 GET {{base_url}}/api/notificaciones/logs?estado=FALLIDO&page=0&size=10
 
 
-### HU-11 | Logs — Filtro por tipo + estado
+### HU-42 | Logs — Filtro por tipo + estado
 # Esperado: 200
 GET {{base_url}}/api/notificaciones/logs?tipo=ALERTA_SISTEMA&estado=ENVIADO&page=0&size=10
 
 
-### HU-12 | Logs — Filtro con tipo inválido
+### HU-42 | Logs — Filtro con tipo inválido
 # Esperado: 400
 GET {{base_url}}/api/notificaciones/logs?tipo=INVALIDO
 
@@ -179,6 +179,6 @@ GET {{base_url}}/api/notificaciones/logs?tipo=INVALIDO
 #  HEALTH CHECK
 # ═══════════════════════════════════════════════════════════════════════════════
 
-### Health check
+### HU-43 | Health check — Monitor de salud del sistema
 # Esperado: 200
 GET {{base_url}}/actuator/health
