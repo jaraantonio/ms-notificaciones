@@ -1,9 +1,7 @@
 package com.perfulandia.notificaciones.config;
 
 import io.swagger.v3.oas.models.OpenAPI;
-import io.swagger.v3.oas.models.info.Contact;
 import io.swagger.v3.oas.models.info.Info;
-import io.swagger.v3.oas.models.info.License;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -33,12 +31,6 @@ public class OpenApiConfig {
                                 - `POST /api/notificaciones/enviar` — Enviar correo
                                 - `GET /api/notificaciones/logs` — Consultar historial
                                 """)
-                        .version("1.0.0")
-                        .contact(new Contact()
-                                .name("Equipo Perfulandia SPA")
-                                .email("soporte@perfulandia.cl"))
-                        .license(new License()
-                                .name("Uso interno")
-                                .url("https://perfulandia.cl")));
+                        .version("1.0.0"));
     }
 }
