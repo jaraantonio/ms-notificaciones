@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Configuration;
 /**
  * Configuración de Springdoc OpenAPI v3.0.x.
  * Documentación accesible en: /swagger-ui.html
- * Especificación OpenAPI en:   /api-docs
+ * Especificación OpenAPI en:   /v3/api-docs
  */
 @Configuration
 public class OpenApiConfig {

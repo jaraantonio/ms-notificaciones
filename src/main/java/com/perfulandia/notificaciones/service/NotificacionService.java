@@ -1,5 +1,6 @@
 package com.perfulandia.notificaciones.service;
 
+import com.perfulandia.notificaciones.exception.EmailSendException;
 import com.perfulandia.notificaciones.model.dto.NotificacionRequestDTO;
 import com.perfulandia.notificaciones.model.dto.NotificacionResponseDTO;
 import com.perfulandia.notificaciones.model.entity.Notificacion;
@@ -111,6 +112,7 @@ public class NotificacionService {
                     : "Error desconocido tras " + MAX_REINTENTOS + " reintentos";
             notificacion.setError(mensajeError);
             log.error("Notificación #{} FALLIDA tras {} reintentos: {}", notificacionId, MAX_REINTENTOS, mensajeError);
+            throw new EmailSendException("No se pudo enviar el correo a " + dto.destinatario() + " tras " + MAX_REINTENTOS + " intentos", ultimaExcepcion);
         }
 
         notificacion = repository.save(notificacion);

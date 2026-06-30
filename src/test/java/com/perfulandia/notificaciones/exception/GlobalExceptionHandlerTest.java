@@ -97,6 +97,17 @@ class GlobalExceptionHandlerTest {
                 .andExpect(jsonPath("$.validationErrors").doesNotExist());
     }
 
+    @Test
+    @DisplayName("EmailSendException → 500 + mensaje descriptivo")
+    void handleEmailSendException() throws Exception {
+        // Given / When / Then
+        mockMvc.perform(get("/test/email-send-error"))
+                .andExpect(status().isInternalServerError())
+                .andExpect(jsonPath("$.status").value(500))
+                .andExpect(jsonPath("$.error").value("Error al enviar notificación"))
+                .andExpect(jsonPath("$.message").value("No se pudo enviar el correo tras 3 intentos"));
+    }
+
     // ─── Controlador de prueba que lanza las excepciones ───
 
     @RestController
@@ -120,6 +131,11 @@ class GlobalExceptionHandlerTest {
         @GetMapping("/test/error")
         public void triggerError() {
             throw new RuntimeException("Unexpected server error");
+        }
+
+        @GetMapping("/test/email-send-error")
+        public void triggerEmailSendError() {
+            throw new EmailSendException("No se pudo enviar el correo tras 3 intentos");
         }
     }
 }

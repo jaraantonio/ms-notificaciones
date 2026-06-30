@@ -78,8 +78,8 @@ class NotificacionServiceTest {
     }
 
     @Test
-    @DisplayName("3 reintentos fallidos, estado final FALLIDO")
-    void testEnviarCorreo_TresReintentosFallidos_EstadoFallido() throws Exception {
+    @DisplayName("3 reintentos fallidos lanza EmailSendException y estado final FALLIDO")
+    void testEnviarCorreo_TresReintentosFallidos_LanzaEmailSendException() throws Exception {
         when(emailService.renderizarHtml(any(), anyMap())).thenReturn("<html>...</html>");
         when(repository.save(any(Notificacion.class))).thenAnswer(inv -> {
             Notificacion n = inv.getArgument(0);
@@ -89,14 +89,9 @@ class NotificacionServiceTest {
         doThrow(new RuntimeException("Error SMTP"))
                 .when(emailService).enviarCorreoHtml(any(Notificacion.class));
 
-        NotificacionResponseDTO response = notificacionService.enviarCorreo(requestValida);
-
-        assertEquals(EstadoNotificacion.FALLIDO, response.estado());
-        assertEquals(3, response.intentos());
-        assertNull(response.fechaEnvio());
-        assertNotNull(response.error());
-        assertTrue(response.error().contains("Error SMTP"));
-        assertTrue(response.error().contains("RuntimeException"));
+        // La excepción se lanza después de 3 reintentos fallidos
+        assertThrows(com.perfulandia.notificaciones.exception.EmailSendException.class,
+                () -> notificacionService.enviarCorreo(requestValida));
 
         verify(emailService, times(3)).enviarCorreoHtml(any(Notificacion.class));
         verify(repository, atLeast(4)).save(any(Notificacion.class));

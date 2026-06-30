@@ -73,15 +73,6 @@ El servidor corre en **http://localhost:8089**.
 
 **Cobertura JaCoCo:** 92.8% instrucciones / 82.5% branches (reporte en `target/site/jacoco/index.html`).
 
-### Tests de integración HTTP (todos los endpoints)
-
-```bash
-./http/run_tests.sh           # Ejecuta 13 requests, verifica códigos HTTP
-./http/run_tests.sh --verbose # Muestra cuerpo de cada respuesta
-```
-
-Los 13 requests están documentados en [http/ms-notificaciones.http](http/ms-notificaciones.http), usables también manualmente desde VS Code con la extensión REST Client.
-
 ## Estructura de requests y respuestas
 
 ### POST /api/notificaciones/enviar — Confirmación de pago

@@ -95,7 +95,7 @@ class NotificacionControllerTest {
         }
 
         @Test
-        @DisplayName("HU-42 · Envío fallido retorna 500 con estado FALLIDO")
+        @DisplayName("HU-42 · Envío fallido retorna 500 con mensaje de error")
         void testEnviarCorreo_Fallido_500() throws Exception {
             String requestJson = """
                     {
@@ -109,23 +109,16 @@ class NotificacionControllerTest {
                     }
                     """;
 
-            NotificacionResponseDTO response = new NotificacionResponseDTO(
-                    2L, TipoNotificacion.ALERTA_SISTEMA, "admin@perfulandia.cl",
-                    "Alerta del Sistema — Perfulandia SPA",
-                    EstadoNotificacion.FALLIDO, 3,
-                    LocalDateTime.now(), null, "RuntimeException: Error SMTP"
-            );
-
             when(notificacionService.enviarCorreo(any()))
-                    .thenReturn(response);
+                    .thenThrow(new com.perfulandia.notificaciones.exception.EmailSendException(
+                            "No se pudo enviar el correo a admin@perfulandia.cl tras 3 intentos"));
 
             mockMvc.perform(post("/api/notificaciones/enviar")
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(requestJson))
                     .andExpect(status().isInternalServerError())
-                    .andExpect(jsonPath("$.estado").value("FALLIDO"))
-                    .andExpect(jsonPath("$.intentos").value(3))
-                    .andExpect(jsonPath("$.error").isNotEmpty());
+                    .andExpect(jsonPath("$.status").value(500))
+                    .andExpect(jsonPath("$.message").value("No se pudo enviar el correo a admin@perfulandia.cl tras 3 intentos"));
         }
 
         @Test
