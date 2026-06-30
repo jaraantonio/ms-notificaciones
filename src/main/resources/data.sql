@@ -14,7 +14,7 @@ INSERT IGNORE INTO notificaciones (id, tipo, destinatario, asunto, cuerpo, estad
 INSERT IGNORE INTO notificaciones (id, tipo, destinatario, asunto, cuerpo, estado, intentos, fecha_creacion, fecha_envio, error) VALUES
 (2, 'CONFIRMACION_PAGO', 'carlos.ruiz@email.com',
  'Confirmación de Pago - Pedido #P-2026-002',
- '<!DOCTYPE html>...',
+ 'Contenido HTML generado dinámicamente',
  'PENDIENTE', 0, '2026-01-15 14:20:00', NULL, NULL);
 
 -- ─── ACTUALIZACION_ENVIO ───
@@ -27,7 +27,7 @@ INSERT IGNORE INTO notificaciones (id, tipo, destinatario, asunto, cuerpo, estad
 INSERT IGNORE INTO notificaciones (id, tipo, destinatario, asunto, cuerpo, estado, intentos, fecha_creacion, fecha_envio, error) VALUES
 (4, 'ACTUALIZACION_ENVIO', 'ana.martinez@email.com',
  'Actualización de Envío - Pedido #E-2026-102',
- '<!DOCTYPE html>...',
+ 'Contenido HTML generado dinámicamente',
  'ENVIADO', 1, '2026-01-16 11:00:00', '2026-01-16 11:00:02', NULL);
 
 -- ─── FACTURA_EMITIDA ───
@@ -40,7 +40,7 @@ INSERT IGNORE INTO notificaciones (id, tipo, destinatario, asunto, cuerpo, estad
 INSERT IGNORE INTO notificaciones (id, tipo, destinatario, asunto, cuerpo, estado, intentos, fecha_creacion, fecha_envio, error) VALUES
 (6, 'FACTURA_EMITIDA', 'facturacion@servicios-ltda.cl',
  'Factura #F-2026-051 — Perfulandia SPA',
- '<!DOCTYPE html>...',
+ 'Contenido HTML generado dinámicamente',
  'FALLIDO', 3, '2026-01-20 08:05:00', NULL,
  'jakarta.mail.SendFailedException: 550 5.1.1 User unknown (intento 3/3)');
 
@@ -54,7 +54,7 @@ INSERT IGNORE INTO notificaciones (id, tipo, destinatario, asunto, cuerpo, estad
 INSERT IGNORE INTO notificaciones (id, tipo, destinatario, asunto, cuerpo, estado, intentos, fecha_creacion, fecha_envio, error) VALUES
 (8, 'RECUPERACION_CLAVE', 'laura.soto@email.com',
  'Recuperación de Clave — Perfulandia SPA',
- '<!DOCTYPE html>...',
+ 'Contenido HTML generado dinámicamente',
  'PENDIENTE', 0, '2026-02-02 10:10:00', NULL, NULL);
 
 -- ─── ALERTA_SISTEMA ───
@@ -67,6 +67,6 @@ INSERT IGNORE INTO notificaciones (id, tipo, destinatario, asunto, cuerpo, estad
 INSERT IGNORE INTO notificaciones (id, tipo, destinatario, asunto, cuerpo, estado, intentos, fecha_creacion, fecha_envio, error) VALUES
 (10, 'ALERTA_SISTEMA', 'admin@perfulandia.cl',
  'ALERTA CRÍTICA: ms-envios timeout',
- '<!DOCTYPE html>...',
+ 'Contenido HTML generado dinámicamente',
  'FALLIDO', 3, '2026-02-11 03:30:00', NULL,
  'jakarta.mail.SendFailedException: 421 4.7.0 Temporary System Problem (intento 3/3)');

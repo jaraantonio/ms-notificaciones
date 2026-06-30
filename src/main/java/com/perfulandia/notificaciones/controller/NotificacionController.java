@@ -40,7 +40,7 @@ public class NotificacionController {
     public ResponseEntity<NotificacionResponseDTO> enviarCorreo(
             @Valid @RequestBody NotificacionRequestDTO request) {
         NotificacionResponseDTO response = notificacionService.enviarCorreo(request);
-        if (response.estado().name().equals("FALLIDO")) {
+        if (response.estado() == com.perfulandia.notificaciones.model.enums.EstadoNotificacion.FALLIDO) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
         return ResponseEntity.status(HttpStatus.CREATED).body(response);

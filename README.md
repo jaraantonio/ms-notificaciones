@@ -233,7 +233,7 @@ Para Duoc/XAMPP (MySQL nativo), usar el perfil `duoc`:
 
 Documentación interactiva disponible en:
 - Swagger UI: http://localhost:8089/swagger-ui.html
-- API Docs (JSON): http://localhost:8089/api-docs
+- API Docs (JSON): http://localhost:8089/v3/api-docs
 
 ## Actuator
 
