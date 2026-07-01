@@ -17,9 +17,7 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.H2Dialect
 
-  # Sin Flyway ni seed data en test
-  flyway:
-    enabled: false
+  # Sin seed data en test
   sql:
     init:
       mode: never
