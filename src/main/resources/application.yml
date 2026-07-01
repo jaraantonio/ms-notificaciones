@@ -2,16 +2,11 @@ spring:
   application:
     name: ms-notificaciones
 
-  # ─── Perfil activo por defecto ───
-  profiles:
-    active: local
-
-  # ─── Configuración por defecto (perfil local: MariaDB 11.8) ───
   datasource:
-    url: jdbc:mariadb://localhost:3306/perfulandia_notificaciones?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=America/Santiago
-    username: ${DB_USERNAME:root}
-    password: ${DB_PASSWORD:1234}
-    driver-class-name: org.mariadb.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/perfulandia_notificaciones?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=America/Santiago
+    username: root
+    password:
+    driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
     defer-datasource-initialization: true
@@ -21,14 +16,12 @@ spring:
     properties:
       hibernate:
         format_sql: true
-        dialect: org.hibernate.dialect.MariaDBDialect
+        dialect: org.hibernate.dialect.MySQLDialect
 
-  # Inicialización SQL (seed data) — ejecutar DESPUÉS de que Hibernate cree las tablas
   sql:
     init:
       mode: always
 
-  # ─── Configuración de correo (valores dummy para desarrollo académico) ───
   mail:
     host: sandbox.smtp.mailtrap.io
     port: 2525
@@ -42,11 +35,9 @@ spring:
       mail.smtp.writetimeout: 2000
       mail.debug: false
 
-# ─── Puerto del servidor ───
 server:
   port: 8089
 
-# ─── Actuator ───
 management:
   endpoints:
     web:
@@ -57,33 +48,10 @@ management:
       show-details: always
   health:
     mail:
-      enabled: false   # desactivado para entorno académico con SMTP dummy
+      enabled: false
 
-# ─── Springdoc OpenAPI ───
 springdoc:
   api-docs:
     path: /v3/api-docs
   swagger-ui:
     path: /swagger-ui.html
-
----
-# ═══════════════════════════════════════════════════════════
-# Perfil DUOC (MySQL 8.x — ddl-auto=update)
-# ═══════════════════════════════════════════════════════════
-spring:
-  config:
-    activate:
-      on-profile: duoc
-
-  datasource:
-    url: jdbc:mysql://localhost:3306/perfulandia_notificaciones?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=America/Santiago&allowPublicKeyRetrieval=true
-    username: ${DB_USERNAME:root}
-    password: ${DB_PASSWORD:1234}
-    driver-class-name: com.mysql.cj.jdbc.Driver
-
-  jpa:
-    hibernate:
-      ddl-auto: update
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.MySQLDialect
